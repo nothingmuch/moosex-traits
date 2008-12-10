@@ -27,7 +27,8 @@ use Test::Exception;
   use Moose;
   with 'MooseX::Traits';
   has '+_trait_namespace' => ( default => 'Another' );
- 
+
+  __PACKAGE__->meta->make_immutable;
 }
 
 {
