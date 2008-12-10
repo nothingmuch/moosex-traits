@@ -41,6 +41,9 @@ sub new_with_traits {
             cache        => 1,        
         );
         $meta->add_method('meta' => sub { $meta });
+
+        $meta->make_immutable if Class::MOP::get_metaclass_by_name($class)->is_immutable;
+
         $class = $meta->name;
     }
 
