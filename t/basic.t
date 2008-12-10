@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 14;
+use Test::More tests => 20;
 use Test::Exception;
 
 { package Trait;
@@ -53,12 +53,27 @@ throws_ok {
     can_ok $instance, 'bar';
     is $instance->bar, 'bar';
 }
+my $class;
 {
     my $instance = Another::Class->new_with_traits( 
         traits   => ['Trait', '+Trait'], 
         foo      => 'foo',
         bar      => 'bar',
     );
+    $class = ref($instance);
+    isa_ok $instance, 'Another::Class';
+    can_ok $instance, 'foo';
+    can_ok $instance, 'bar';
+    is $instance->foo, 'foo';
+    is $instance->bar, 'bar';
+}
+{
+    my $instance = Another::Class->new_with_traits(
+        traits   => ['Trait', '+Trait'],
+        foo      => 'foo',
+        bar      => 'bar',
+    );
+    is( ref($instance), $class, "anon class was cached" );
     isa_ok $instance, 'Another::Class';
     can_ok $instance, 'foo';
     can_ok $instance, 'bar';
